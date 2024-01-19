@@ -29,6 +29,29 @@ app.get("/todo", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+app.put("/update/:id", (req, res) => {
+  const { id } = req.params;
+  try {
+    TodoModel.findByIdAndUpdate({ _id: id }, { done: true }).then((result) => {
+      res.json({
+        message: "sukses mengedit todo",
+        data: result,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.delete("/delete/:id", (req, res) => {
+  const { id } = req.params;
+  try {
+    TodoModel.findByIdAndDelete({ _id: id }).then((result) => res.json(result));
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.listen(8000, () => {
   console.log("server running");
 });

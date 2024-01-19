@@ -12,6 +12,7 @@ function App() {
       console.log("clicked");
       const result = await axios.post("http://localhost:8000/add", { task });
       console.log(result);
+      location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -30,6 +31,26 @@ function App() {
     getData();
   }, []);
 
+  const editHandler = async (id) => {
+    try {
+      const result = await axios.put(`http://localhost:8000/update/${id}`);
+      console.log(result);
+      location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteHandler = async (id) => {
+    try {
+      const result = await axios.delete(`http://localhost:8000/delete/${id}`);
+      console.log(result);
+      location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const taskHandler = (e) => {
     setTask(e.target.value);
     console.log(e.target.value);
@@ -47,9 +68,14 @@ function App() {
       {data.length !== 0 ? (
         data.map((item, index) => {
           return (
-            <div key={index} className="">
+            <div
+              key={index}
+              className="flex items-center gap-10 justify-center mt-10"
+              onClick={() => editHandler(item._id)}
+            >
               <p>{item.task}</p>
-              <button>hapus</button>
+              <p>{item.done === true ? "selesai" : "belum"}</p>
+              <button onClick={() => deleteHandler(item._id)}>hapus</button>
             </div>
           );
         })
